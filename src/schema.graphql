@@ -5,25 +5,25 @@
 type PickingSlipDate {
   id: String!
   pickingSlip: PickingSlip!
-  printedUsername: String!
-  inspectedUsername: String!
-  packedUsername: String!
-  shippedUsername: String!
-  heldUsername: String!
-  cancelledUsername: String!
-  refundedUsername: String!
-  confirmedUsername: String!
-  printedAt: DateTime!
-  inspectedAt: DateTime!
-  packedAt: DateTime!
-  shippedAt: DateTime!
-  deliveredAt: DateTime!
-  returnedAt: DateTime!
-  cancelledAt: DateTime!
-  refundedAt: DateTime!
-  heldAt: DateTime!
-  confirmedAt: DateTime!
-  heldReason: String!
+  printedUsername: String
+  inspectedUsername: String
+  packedUsername: String
+  shippedUsername: String
+  heldUsername: String
+  cancelledUsername: String
+  refundedUsername: String
+  confirmedUsername: String
+  printedAt: DateTime
+  inspectedAt: DateTime
+  packedAt: DateTime
+  shippedAt: DateTime
+  deliveredAt: DateTime
+  returnedAt: DateTime
+  cancelledAt: DateTime
+  refundedAt: DateTime
+  heldAt: DateTime
+  confirmedAt: DateTime
+  heldReason: String
 }
 
 """
@@ -37,8 +37,8 @@ type PickingSlip {
   orderFulfillmentOrderId: String!
   isContainedSingleProduct: Int!
   createdAt: DateTime!
-  pickingSlipDate: PickingSlipDate!
-  status: PickingSlipStatus!
+  pickingSlipDate: PickingSlipDate
+  status: PickingSlipStatus
 }
 
 enum PickingSlipStatus {
@@ -51,22 +51,22 @@ type PickingSlipItem {
   id: String!
   pickingSlip: PickingSlip!
   itemId: String!
-  stockId: String!
+  stockId: String
   orderFulfillmentProductId: String!
   quantity: Int!
   refundedQuantity: Int!
-  locationId: String!
-  locationCode: String!
+  locationId: String
+  locationCode: String
   isPreOrder: Int!
   isSalesOnly: Int!
-  preOrderShippingAt: DateTime!
-  preOrderDeadlineAt: DateTime!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  preOrderShippingAt: DateTime
+  preOrderDeadlineAt: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 type Query {
-  pickingSlips(limit: Int, status: PickingSlipStatus): [PickingSlip!]!
+  pickingSlips(limit: Int, status: PickingSlipStatus, has_pre_order_item: Boolean): [PickingSlip!]!
   pickingSlip(id: String!): PickingSlip!
   pickingSlipDates(limit: Int): [PickingSlipDate!]!
   pickingSlipDate(id: String!): PickingSlipDate!

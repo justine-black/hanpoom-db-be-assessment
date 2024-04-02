@@ -30,14 +30,17 @@ export class PickingSlip {
   @Field(() => Int)
   isContainedSingleProduct: number;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: true })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   @Field(() => Date)
   createdAt: Date;
 
-  @OneToOne(() => PickingSlipDate)
-  @Field(() => PickingSlipDate)
+  @OneToOne(
+    () => PickingSlipDate,
+    (pickingSlipDate) => pickingSlipDate.pickingSlip,
+  )
+  @Field(() => PickingSlipDate, { nullable: true })
   pickingSlipDate: PickingSlipDate;
 
-  @Field((type) => PickingSlipStatus)
+  @Field((type) => PickingSlipStatus, { nullable: true })
   status: PickingSlipStatus;
 }

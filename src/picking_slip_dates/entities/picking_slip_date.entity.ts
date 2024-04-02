@@ -9,7 +9,7 @@ export class PickingSlipDate {
   @Field(() => String)
   id: String;
 
-  @OneToOne(() => PickingSlip)
+  @OneToOne(() => PickingSlip, (pickingSlip) => pickingSlip.pickingSlipDate)
   @JoinColumn({ name: 'picking_slip_id' })
   @Field(() => PickingSlip)
   pickingSlip: PickingSlip;
@@ -20,7 +20,7 @@ export class PickingSlipDate {
     length: 20,
     nullable: true,
   })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   printedUsername: string;
 
   @Column({
@@ -29,7 +29,7 @@ export class PickingSlipDate {
     length: 20,
     nullable: true,
   })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   inspectedUsername: string;
 
   @Column({
@@ -38,7 +38,7 @@ export class PickingSlipDate {
     length: 20,
     nullable: true,
   })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   packedUsername: string;
 
   @Column({
@@ -47,7 +47,7 @@ export class PickingSlipDate {
     length: 20,
     nullable: true,
   })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   shippedUsername: string;
 
   @Column({
@@ -56,7 +56,7 @@ export class PickingSlipDate {
     length: 20,
     nullable: true,
   })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   heldUsername: string;
 
   @Column({
@@ -65,7 +65,7 @@ export class PickingSlipDate {
     length: 20,
     nullable: true,
   })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   cancelledUsername: string;
 
   @Column({
@@ -74,7 +74,7 @@ export class PickingSlipDate {
     length: 20,
     nullable: true,
   })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   refundedUsername: string;
 
   @Column({
@@ -83,7 +83,7 @@ export class PickingSlipDate {
     length: 20,
     nullable: true,
   })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   confirmedUsername: string;
 
   @Column({
@@ -92,7 +92,7 @@ export class PickingSlipDate {
     default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   printedAt: Date;
 
   @Column({
@@ -101,7 +101,7 @@ export class PickingSlipDate {
     default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   inspectedAt: Date;
 
   @Column({
@@ -110,7 +110,7 @@ export class PickingSlipDate {
     default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   packedAt: Date;
 
   @Column({
@@ -119,7 +119,7 @@ export class PickingSlipDate {
     default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   shippedAt: Date;
 
   @Column({
@@ -128,7 +128,7 @@ export class PickingSlipDate {
     default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   deliveredAt: Date;
 
   @Column({
@@ -137,7 +137,7 @@ export class PickingSlipDate {
     default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   returnedAt: Date;
 
   @Column({
@@ -146,7 +146,7 @@ export class PickingSlipDate {
     default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   cancelledAt: Date;
 
   @Column({
@@ -155,7 +155,7 @@ export class PickingSlipDate {
     default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   refundedAt: Date;
 
   @Column({
@@ -164,7 +164,7 @@ export class PickingSlipDate {
     default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   heldAt: Date;
 
   @Column({
@@ -173,10 +173,10 @@ export class PickingSlipDate {
     default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   confirmedAt: Date;
 
   @Column({ name: 'held_reason', type: 'varchar', length: 20, nullable: true })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   heldReason: string;
 }

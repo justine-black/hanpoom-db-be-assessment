@@ -27,7 +27,7 @@ export class PickingSlipItem {
   itemId: String;
 
   @Column({ name: 'stock_id', type: 'bigint', width: 20, nullable: true })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   stockId: String;
 
   @Column({ name: 'order_fulfillment_product_id', type: 'bigint', width: 20 })
@@ -43,7 +43,7 @@ export class PickingSlipItem {
   refundedQuantity: number;
 
   @Column({ name: 'location_id', type: 'bigint', width: 20, nullable: true })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   locationId: number;
 
   @Column({
@@ -52,7 +52,7 @@ export class PickingSlipItem {
     length: 30,
     nullable: true,
   })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   locationCode: string;
 
   @Column({ name: 'is_pre_order', type: 'tinyint', width: 1 })
@@ -69,7 +69,7 @@ export class PickingSlipItem {
     default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   preOrderShippingAt: Date;
 
   @Column({
@@ -78,14 +78,14 @@ export class PickingSlipItem {
     default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   preOrderDeadlineAt: Date;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: true })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: true })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   updatedAt: Date;
 }

@@ -6,12 +6,12 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 @ObjectType('PickingSlipDate')
 export class PickingSlipDate {
   @PrimaryColumn({ name: 'id', type: 'bigint', width: 20 })
-  @Field(() => Int)
+  @Field(() => String)
   id: String;
 
   @OneToOne(() => PickingSlip)
   @JoinColumn({ name: 'picking_slip_id' })
-  @Field(() => Int)
+  @Field(() => PickingSlip)
   pickingSlip: PickingSlip;
 
   @Column({

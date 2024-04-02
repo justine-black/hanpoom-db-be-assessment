@@ -16,8 +16,8 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type PickingSlipDate {
-  id: Int!
-  pickingSlip: Int!
+  id: String!
+  pickingSlip: PickingSlip!
   printedUsername: String!
   inspectedUsername: String!
   packedUsername: String!
@@ -39,21 +39,32 @@ type PickingSlipDate {
   heldReason: String!
 }
 
+type PickingSlipItem {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
   pickingSlips: [PickingSlip!]!
   pickingSlip(id: String!): PickingSlip!
   pickingSlipDates: [PickingSlipDate!]!
-  pickingSlipDate(id: Int!): PickingSlipDate!
+  pickingSlipDate(id: String!): PickingSlipDate!
+  pickingSlipItems: [PickingSlipItem!]!
+  pickingSlipItem(id: Int!): PickingSlipItem!
 }
 
 type Mutation {
   seedPickingSlips: String!
+  seedPickingSlipDates: String!
   createPickingSlip(createPickingSlipInput: CreatePickingSlipInput!): PickingSlip!
   updatePickingSlip(updatePickingSlipInput: UpdatePickingSlipInput!): PickingSlip!
   removePickingSlip(id: Int!): PickingSlip!
   createPickingSlipDate(createPickingSlipDateInput: CreatePickingSlipDateInput!): PickingSlipDate!
   updatePickingSlipDate(updatePickingSlipDateInput: UpdatePickingSlipDateInput!): PickingSlipDate!
   removePickingSlipDate(id: Int!): PickingSlipDate!
+  createPickingSlipItem(createPickingSlipItemInput: CreatePickingSlipItemInput!): PickingSlipItem!
+  updatePickingSlipItem(updatePickingSlipItemInput: UpdatePickingSlipItemInput!): PickingSlipItem!
+  removePickingSlipItem(id: Int!): PickingSlipItem!
 }
 
 input CreatePickingSlipInput {
@@ -78,6 +89,17 @@ input CreatePickingSlipDateInput {
 }
 
 input UpdatePickingSlipDateInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreatePickingSlipItemInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdatePickingSlipItemInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!

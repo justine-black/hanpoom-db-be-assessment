@@ -6,10 +6,15 @@ import { UpdatePickingSlipDateInput } from './dto/update-picking_slip_date.input
 
 @Resolver(() => PickingSlipDate)
 export class PickingSlipDatesResolver {
-  constructor(private readonly pickingSlipDatesService: PickingSlipDatesService) {}
+  constructor(
+    private readonly pickingSlipDatesService: PickingSlipDatesService,
+  ) {}
 
   @Mutation(() => PickingSlipDate)
-  createPickingSlipDate(@Args('createPickingSlipDateInput') createPickingSlipDateInput: CreatePickingSlipDateInput) {
+  createPickingSlipDate(
+    @Args('createPickingSlipDateInput')
+    createPickingSlipDateInput: CreatePickingSlipDateInput,
+  ) {
     return this.pickingSlipDatesService.create(createPickingSlipDateInput);
   }
 
@@ -19,13 +24,19 @@ export class PickingSlipDatesResolver {
   }
 
   @Query(() => PickingSlipDate, { name: 'pickingSlipDate' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => String }) id: String) {
     return this.pickingSlipDatesService.findOne(id);
   }
 
   @Mutation(() => PickingSlipDate)
-  updatePickingSlipDate(@Args('updatePickingSlipDateInput') updatePickingSlipDateInput: UpdatePickingSlipDateInput) {
-    return this.pickingSlipDatesService.update(updatePickingSlipDateInput.id, updatePickingSlipDateInput);
+  updatePickingSlipDate(
+    @Args('updatePickingSlipDateInput')
+    updatePickingSlipDateInput: UpdatePickingSlipDateInput,
+  ) {
+    return this.pickingSlipDatesService.update(
+      updatePickingSlipDateInput.id,
+      updatePickingSlipDateInput,
+    );
   }
 
   @Mutation(() => PickingSlipDate)

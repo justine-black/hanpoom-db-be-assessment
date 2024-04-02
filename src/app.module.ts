@@ -7,6 +7,7 @@ import { join } from 'path';
 import { PickingSlipsModule } from './picking_slips/picking_slips.module';
 import { SeederModule } from './seeder/seeder.module';
 import { PickingSlipDatesModule } from './picking_slip_dates/picking_slip_dates.module';
+import { PickingSlipItemsModule } from './picking_slip_items/picking_slip_items.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { PickingSlipDatesModule } from './picking_slip_dates/picking_slip_dates.
     SeederModule,
     PickingSlipsModule,
     PickingSlipDatesModule,
+    PickingSlipItemsModule,
   ],
 })
 export class AppModule {}

@@ -6,26 +6,37 @@ import { UpdatePickingSlipItemInput } from './dto/update-picking_slip_item.input
 
 @Resolver(() => PickingSlipItem)
 export class PickingSlipItemsResolver {
-  constructor(private readonly pickingSlipItemsService: PickingSlipItemsService) {}
+  constructor(
+    private readonly pickingSlipItemsService: PickingSlipItemsService,
+  ) {}
 
   @Mutation(() => PickingSlipItem)
-  createPickingSlipItem(@Args('createPickingSlipItemInput') createPickingSlipItemInput: CreatePickingSlipItemInput) {
+  createPickingSlipItem(
+    @Args('createPickingSlipItemInput')
+    createPickingSlipItemInput: CreatePickingSlipItemInput,
+  ) {
     return this.pickingSlipItemsService.create(createPickingSlipItemInput);
   }
 
   @Query(() => [PickingSlipItem], { name: 'pickingSlipItems' })
-  findAll() {
-    return this.pickingSlipItemsService.findAll();
+  findAll(@Args('limit', { type: () => Int, nullable: true }) limit?: number) {
+    return this.pickingSlipItemsService.findAll(limit);
   }
 
   @Query(() => PickingSlipItem, { name: 'pickingSlipItem' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => String }) id: String) {
     return this.pickingSlipItemsService.findOne(id);
   }
 
   @Mutation(() => PickingSlipItem)
-  updatePickingSlipItem(@Args('updatePickingSlipItemInput') updatePickingSlipItemInput: UpdatePickingSlipItemInput) {
-    return this.pickingSlipItemsService.update(updatePickingSlipItemInput.id, updatePickingSlipItemInput);
+  updatePickingSlipItem(
+    @Args('updatePickingSlipItemInput')
+    updatePickingSlipItemInput: UpdatePickingSlipItemInput,
+  ) {
+    return this.pickingSlipItemsService.update(
+      updatePickingSlipItemInput.id,
+      updatePickingSlipItemInput,
+    );
   }
 
   @Mutation(() => PickingSlipItem)

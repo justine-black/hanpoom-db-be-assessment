@@ -5,6 +5,7 @@ import { DataSource } from 'typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { PickingSlip } from 'src/picking_slips/entities/picking_slip.entity';
 import { PickingSlipDate } from 'src/picking_slip_dates/entities/picking_slip_date.entity';
+import { PickingSlipItem } from 'src/picking_slip_items/entities/picking_slip_item.entity';
 import * as fs from 'fs';
 import * as csv from 'csv-parser';
 
@@ -96,6 +97,58 @@ export class PickingSlipDateSeederService {
           console.log('CSV File read sccessfully.');
           console.log(pickingSlipDates);
           await this.dataSource.manager.save(pickingSlipDates);
+        } catch (error) {
+          console.error('Error saving picking slips:', error);
+        }
+      })
+      .on('error', (error) => {
+        console.error('Error:', error);
+      });
+  }
+}
+
+@Injectable()
+export class PickingSlipItemSeederService {
+  constructor(
+    @InjectDataSource() private readonly dataSource: DataSource,
+    @InjectRepository(PickingSlip)
+    private readonly pickingSlipsRepository: Repository<PickingSlip>,
+  ) {}
+
+  async seedFromCSV(csvFilePath: string): Promise<void> {
+    const pickingSlipItems: PickingSlipItem[] = [];
+
+    const readStream = fs.createReadStream(csvFilePath);
+
+    readStream
+      .pipe(csv())
+      .on('data', async (row) => {
+        const pickingSlipItem = new PickingSlipItem();
+        pickingSlipItem.id = row.id;
+        pickingSlipItem.itemId = row.item_id;
+        pickingSlipItem.stockId = row.stock_id || null;
+        pickingSlipItem.orderFulfillmentProductId =
+          row.order_fulfillment_product_id || null;
+        pickingSlipItem.quantity = parseInt(row.quantity) || 0;
+        pickingSlipItem.refundedQuantity = parseInt(row.refunded_quantity) || 0;
+        pickingSlipItem.locationId = row.location_id || null;
+        pickingSlipItem.locationCode = row.location_code || null;
+        pickingSlipItem.isPreOrder = parseInt(row.is_pre_order);
+        pickingSlipItem.isSalesOnly = parseInt(row.is_sales_only);
+        pickingSlipItem.preOrderShippingAt = row.pre_order_shipping_at || null;
+        pickingSlipItem.preOrderDeadlineAt = row.pre_order_deadline_at || null;
+        pickingSlipItem.createdAt = row.created_at || null;
+        pickingSlipItem.updatedAt = row.updated_at || null;
+
+        pickingSlipItem.pickingSlip = row.picking_slip_id;
+
+        pickingSlipItems.push(pickingSlipItem);
+      })
+      .on('end', async () => {
+        try {
+          console.log('CSV File read sccessfully.');
+          console.log(pickingSlipItems);
+          await this.dataSource.manager.save(pickingSlipItems);
         } catch (error) {
           console.error('Error saving picking slips:', error);
         }

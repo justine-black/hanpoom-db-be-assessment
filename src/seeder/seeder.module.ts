@@ -4,6 +4,7 @@ import { PickingSlipsResolver } from './seeder.resolver';
 import {
   PickingSlipDateSeederService,
   PickingSlipSeederService,
+  PickingSlipItemSeederService,
 } from './seeder.service';
 import { PickingSlip } from 'src/picking_slips/entities/picking_slip.entity';
 
@@ -13,6 +14,7 @@ import { PickingSlip } from 'src/picking_slips/entities/picking_slip.entity';
     PickingSlipsResolver,
     PickingSlipSeederService,
     PickingSlipDateSeederService,
+    PickingSlipItemSeederService,
   ],
 })
 export class SeederModule {}

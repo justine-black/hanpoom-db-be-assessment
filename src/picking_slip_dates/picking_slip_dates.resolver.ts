@@ -19,8 +19,8 @@ export class PickingSlipDatesResolver {
   }
 
   @Query(() => [PickingSlipDate], { name: 'pickingSlipDates' })
-  findAll() {
-    return this.pickingSlipDatesService.findAll();
+  findAll(@Args('limit', { type: () => Int, nullable: true }) limit?: number) {
+    return this.pickingSlipDatesService.findAll(limit);
   }
 
   @Query(() => PickingSlipDate, { name: 'pickingSlipDate' })

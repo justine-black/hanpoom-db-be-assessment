@@ -16,14 +16,18 @@ export class PickingSlipDatesService {
     return 'This action adds a new pickingSlipDate';
   }
 
-  async findAll() {
+  async findAll(limit?: number) {
     return await this.pickingSlipDatesRepository.find({
+      take: limit,
       relations: ['pickingSlip'],
     });
   }
 
   async findOne(id: String) {
-    return await this.pickingSlipDatesRepository.findOneBy({ id });
+    return await this.pickingSlipDatesRepository.findOne({
+      where: { id: id },
+      relations: ['pickingSlip'],
+    });
   }
 
   update(id: number, updatePickingSlipDateInput: UpdatePickingSlipDateInput) {

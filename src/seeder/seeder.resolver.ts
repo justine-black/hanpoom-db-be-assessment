@@ -2,6 +2,7 @@ import { Resolver, Mutation } from '@nestjs/graphql';
 import {
   PickingSlipSeederService,
   PickingSlipDateSeederService,
+  PickingSlipItemSeederService,
 } from './seeder.service';
 import { PickingSlip } from 'src/picking_slips/entities/picking_slip.entity';
 
@@ -9,7 +10,7 @@ import { PickingSlip } from 'src/picking_slips/entities/picking_slip.entity';
 export class PickingSlipsResolver {
   constructor(
     private readonly pickingSlipSeederService: PickingSlipSeederService,
-    private readonly pickingSlipDateSeederService: PickingSlipDateSeederService,
+    private readonly pickingSlipItemSeederService: PickingSlipItemSeederService,
   ) {}
 
   @Mutation(() => String, { name: 'seedPickingSlips' })
@@ -27,12 +28,24 @@ export class PickingSlipsResolver {
   @Mutation(() => String, { name: 'seedPickingSlipDates' })
   async seedPickingSlipDates() {
     try {
-      await this.pickingSlipDateSeederService.seedFromCSV(
+      await this.pickingSlipItemSeederService.seedFromCSV(
         'src/seeder/data/picking_slip_dates.csv',
       );
       return 'Seeding picking_slip_dates data successful';
     } catch (error) {
       return 'Seeding picking_slip_dates data failed';
+    }
+  }
+
+  @Mutation(() => String, { name: 'seedPickingSlipItems' })
+  async seedPickingSlipItems() {
+    try {
+      await this.pickingSlipItemSeederService.seedFromCSV(
+        'src/seeder/data/picking_slip_items.csv',
+      );
+      return 'Seeding picking_slip_items data successful';
+    } catch (error) {
+      return 'Seeding picking_slip_items data failed';
     }
   }
 }

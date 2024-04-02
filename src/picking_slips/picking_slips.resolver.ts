@@ -3,6 +3,7 @@ import { PickingSlipsService } from './picking_slips.service';
 import { PickingSlip } from './entities/picking_slip.entity';
 import { CreatePickingSlipInput } from './dto/create-picking_slip.input';
 import { UpdatePickingSlipInput } from './dto/update-picking_slip.input';
+import { PickingSlipStatus } from 'src/enums/picking_slip_status.enum';
 
 @Resolver(() => PickingSlip)
 export class PickingSlipsResolver {
@@ -17,8 +18,12 @@ export class PickingSlipsResolver {
   }
 
   @Query(() => [PickingSlip], { name: 'pickingSlips' })
-  findAll() {
-    return this.pickingSlipsService.findAll();
+  findAll(
+    @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+    @Args('status', { type: () => PickingSlipStatus, nullable: true })
+    status?: PickingSlipStatus,
+  ) {
+    return this.pickingSlipsService.findAll(limit);
   }
 
   @Query(() => PickingSlip, { name: 'pickingSlip' })

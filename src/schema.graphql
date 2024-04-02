@@ -2,19 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type PickingSlip {
-  id: String!
-  orderId: String!
-  orderFulfillmentOrderId: String!
-  isContainedSingleProduct: Int!
-  createdAt: DateTime!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type PickingSlipDate {
   id: String!
   pickingSlip: PickingSlip!
@@ -39,23 +26,58 @@ type PickingSlipDate {
   heldReason: String!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type PickingSlip {
+  id: String!
+  orderId: String!
+  orderFulfillmentOrderId: String!
+  isContainedSingleProduct: Int!
+  createdAt: DateTime!
+  pickingSlipDate: PickingSlipDate!
+  status: PickingSlipStatus!
+}
+
+enum PickingSlipStatus {
+  NOT_PRINTED
+  PRINTED
+  HELD
+}
+
 type PickingSlipItem {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  id: String!
+  pickingSlip: PickingSlip!
+  itemId: String!
+  stockId: String!
+  orderFulfillmentProductId: String!
+  quantity: Int!
+  refundedQuantity: Int!
+  locationId: String!
+  locationCode: String!
+  isPreOrder: Int!
+  isSalesOnly: Int!
+  preOrderShippingAt: DateTime!
+  preOrderDeadlineAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Query {
-  pickingSlips: [PickingSlip!]!
+  pickingSlips(limit: Int, status: PickingSlipStatus): [PickingSlip!]!
   pickingSlip(id: String!): PickingSlip!
-  pickingSlipDates: [PickingSlipDate!]!
+  pickingSlipDates(limit: Int): [PickingSlipDate!]!
   pickingSlipDate(id: String!): PickingSlipDate!
-  pickingSlipItems: [PickingSlipItem!]!
-  pickingSlipItem(id: Int!): PickingSlipItem!
+  pickingSlipItems(limit: Int): [PickingSlipItem!]!
+  pickingSlipItem(id: String!): PickingSlipItem!
 }
 
 type Mutation {
   seedPickingSlips: String!
   seedPickingSlipDates: String!
+  seedPickingSlipItems: String!
   createPickingSlip(createPickingSlipInput: CreatePickingSlipInput!): PickingSlip!
   updatePickingSlip(updatePickingSlipInput: UpdatePickingSlipInput!): PickingSlip!
   removePickingSlip(id: Int!): PickingSlip!

@@ -1,5 +1,15 @@
 import { DateScalarMode, Field, Int, ObjectType } from '@nestjs/graphql';
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryColumn,
+  VirtualColumn,
+} from 'typeorm';
+import { PickingSlipStatus } from 'src/enums/picking_slip_status.enum';
+import { PickingSlipDate } from 'src/picking_slip_dates/entities/picking_slip_date.entity';
 
 @Entity('picking_slips')
 @ObjectType('PickingSlip')
@@ -23,4 +33,11 @@ export class PickingSlip {
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: true })
   @Field(() => Date)
   createdAt: Date;
+
+  @OneToOne(() => PickingSlipDate)
+  @Field(() => PickingSlipDate)
+  pickingSlipDate: PickingSlipDate;
+
+  @Field((type) => PickingSlipStatus)
+  status: PickingSlipStatus;
 }

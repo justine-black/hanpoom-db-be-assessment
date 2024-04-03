@@ -23,7 +23,7 @@ export class PickingSlipsService {
   async findAll(
     limit: number,
     status: PickingSlipStatus,
-    has_pre_order_item: Boolean = true,
+    hasPreOrderItem: Boolean,
   ) {
     const queryBuilder: SelectQueryBuilder<PickingSlip> =
       this.pickingSlipsRepository.createQueryBuilder('pickingSlip');
@@ -54,7 +54,18 @@ export class PickingSlipsService {
         break;
     }
 
+    if (hasPreOrderItem === true) {
+      queryBuilder.andWhere(
+        'exists (select 1 from picking_slip_items where is_pre_order = 1 and picking_slip_id = pickingSlip.id)',
+      );
+    } else if (hasPreOrderItem === false) {
+      queryBuilder.andWhere(
+        'not exists (select 1 from picking_slip_items where is_pre_order = 1 and picking_slip_id = pickingSlip.id)',
+      );
+    }
+
     queryBuilder.orderBy('pickingSlip.created_at', 'DESC').limit(limit);
+
     return await queryBuilder.getMany();
   }
 
@@ -91,6 +102,6 @@ export class PickingSlipsService {
   }
 
   async hasPreOrderItem(pickingSlipItems: [PickingSlipItem]): Promise<Boolean> {
-    return pickingSlipItems.some((item) => item.isPreOrder === 1);
+    return pickingSlipItems.some((item) => item.isPreOrder === 1) || false;
   }
 }

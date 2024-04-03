@@ -30,10 +30,10 @@ export class PickingSlipsResolver {
     @Args('limit', { type: () => Int, nullable: true }) limit?: number,
     @Args('status', { type: () => PickingSlipStatus, nullable: true })
     status?: PickingSlipStatus,
-    @Args('has_pre_order_item', { type: () => Boolean, nullable: true })
-    has_pre_order_item?: Boolean,
+    @Args('hasPreOrderItem', { type: () => Boolean, nullable: true })
+    hasPreOrderItem?: Boolean,
   ) {
-    return this.pickingSlipsService.findAll(limit, status, has_pre_order_item);
+    return this.pickingSlipsService.findAll(limit, status, hasPreOrderItem);
   }
 
   @Query(() => PickingSlip, { name: 'pickingSlip' })

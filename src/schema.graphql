@@ -69,7 +69,7 @@ enum PickingSlipStatus {
 }
 
 type Query {
-  pickingSlips(limit: Int, status: PickingSlipStatus, has_pre_order_item: Boolean): [PickingSlip!]!
+  pickingSlips(limit: Int, status: PickingSlipStatus, hasPreOrderItem: Boolean): [PickingSlip!]!
   pickingSlip(id: String!): PickingSlip!
   pickingSlipDates(limit: Int): [PickingSlipDate!]!
   pickingSlipDate(id: String!): PickingSlipDate!

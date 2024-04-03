@@ -10,6 +10,7 @@ import { PickingSlip } from 'src/picking_slips/entities/picking_slip.entity';
 export class PickingSlipsResolver {
   constructor(
     private readonly pickingSlipSeederService: PickingSlipSeederService,
+    private readonly pickingSlipDateSeederService: PickingSlipDateSeederService,
     private readonly pickingSlipItemSeederService: PickingSlipItemSeederService,
   ) {}
 
@@ -28,7 +29,7 @@ export class PickingSlipsResolver {
   @Mutation(() => String, { name: 'seedPickingSlipDates' })
   async seedPickingSlipDates() {
     try {
-      await this.pickingSlipItemSeederService.seedFromCSV(
+      await this.pickingSlipDateSeederService.seedFromCSV(
         'src/seeder/data/picking_slip_dates.csv',
       );
       return 'Seeding picking_slip_dates data successful';

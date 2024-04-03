@@ -37,6 +37,7 @@ export class PickingSlip {
   @OneToOne(
     () => PickingSlipDate,
     (pickingSlipDate) => pickingSlipDate.pickingSlip,
+    { onDelete: 'CASCADE' },
   )
   @Field(() => PickingSlipDate, { nullable: true })
   pickingSlipDate: PickingSlipDate;
@@ -44,7 +45,7 @@ export class PickingSlip {
   @OneToMany(
     () => PickingSlipItem,
     (pickingSlipItem) => pickingSlipItem.pickingSlip,
-    { nullable: true },
+    { onDelete: 'CASCADE', nullable: true },
   )
   @Field(() => [PickingSlipItem], { nullable: true })
   pickingSlipItems: [PickingSlipItem];

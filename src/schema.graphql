@@ -31,22 +31,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type PickingSlip {
-  id: String!
-  orderId: String!
-  orderFulfillmentOrderId: String!
-  isContainedSingleProduct: Int!
-  createdAt: DateTime!
-  pickingSlipDate: PickingSlipDate
-  status: PickingSlipStatus
-}
-
-enum PickingSlipStatus {
-  NOT_PRINTED
-  PRINTED
-  HELD
-}
-
 type PickingSlipItem {
   id: String!
   pickingSlip: PickingSlip!
@@ -63,6 +47,25 @@ type PickingSlipItem {
   preOrderDeadlineAt: DateTime
   createdAt: DateTime
   updatedAt: DateTime
+}
+
+type PickingSlip {
+  id: String!
+  orderId: String!
+  orderFulfillmentOrderId: String!
+  isContainedSingleProduct: Int!
+  createdAt: DateTime!
+  pickingSlipDate: PickingSlipDate
+  pickingSlipItems: [PickingSlipItem!]
+  status: PickingSlipStatus
+  hasPreOrderItem: Boolean
+}
+
+enum PickingSlipStatus {
+  NOT_PRINTED
+  PRINTED
+  HELD
+  OTHERS
 }
 
 type Query {

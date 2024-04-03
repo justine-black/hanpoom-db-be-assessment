@@ -4,6 +4,9 @@ import { UpdatePickingSlipInput } from './dto/update-picking_slip.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 import { PickingSlip } from './entities/picking_slip.entity';
+import { PickingSlipStatus } from 'src/enums/picking_slip_status.enum';
+import { PickingSlipDate } from 'src/picking_slip_dates/entities/picking_slip_date.entity';
+import { PickingSlipItem } from 'src/picking_slip_items/entities/picking_slip_item.entity';
 
 @Injectable()
 export class PickingSlipsService {
@@ -17,18 +20,49 @@ export class PickingSlipsService {
     return 'This action adds a new pickingSlip';
   }
 
-  async findAll(limit?: number) {
+  async findAll(
+    limit: number,
+    status: PickingSlipStatus,
+    has_pre_order_item: Boolean = true,
+  ) {
     const queryBuilder: SelectQueryBuilder<PickingSlip> =
       this.pickingSlipsRepository.createQueryBuilder('pickingSlip');
 
     queryBuilder
-      // .leftJoinAndSelect('pickingSlip.pickingSlipDate', 'pickingSlipDate')
-      .limit(limit);
+      .leftJoinAndSelect('pickingSlip.pickingSlipDate', 'pickingSlipDate')
+      .leftJoinAndSelect('pickingSlip.pickingSlipItems', 'pickingSlipItems');
+
+    switch (status) {
+      case PickingSlipStatus.NOT_PRINTED:
+        queryBuilder
+          .where('pickingSlipDate.printed_at IS NULL')
+          .andWhere('pickingSlipDate.inspected_at IS NULL')
+          .andWhere('pickingSlipDate.shipped_at IS NULL')
+          .andWhere('pickingSlipDate.held_at IS NULL');
+        break;
+      case PickingSlipStatus.PRINTED:
+        queryBuilder
+          .where('pickingSlipDate.printed_at IS NOT NULL')
+          .andWhere('pickingSlipDate.inspected_at IS NULL')
+          .andWhere('pickingSlipDate.shipped_at IS NULL')
+          .andWhere('pickingSlipDate.held_at IS NULL');
+        break;
+      case PickingSlipStatus.HELD:
+        queryBuilder.where('pickingSlipDate.held_at IS NOT NULL');
+        break;
+      default:
+        break;
+    }
+
+    queryBuilder.orderBy('pickingSlip.created_at', 'DESC').limit(limit);
     return await queryBuilder.getMany();
   }
 
   async findOne(id: String) {
-    return await this.pickingSlipsRepository.findOneBy({ id });
+    return await this.pickingSlipsRepository.findOne({
+      where: { id: id },
+      relations: ['pickingSlipDate', 'pickingSlipItems'],
+    });
   }
 
   update(id: number, updatePickingSlipInput: UpdatePickingSlipInput) {
@@ -37,5 +71,26 @@ export class PickingSlipsService {
 
   remove(id: number) {
     return `This action removes a #${id} pickingSlip`;
+  }
+
+  calculateStatus(pickingSlipDate: PickingSlipDate): PickingSlipStatus {
+    const printedAt = pickingSlipDate.printedAt;
+    const inspectedAt = pickingSlipDate.inspectedAt;
+    const shippedAt = pickingSlipDate.shippedAt;
+    const heldAt = pickingSlipDate.heldAt;
+
+    if (!printedAt && !inspectedAt && !shippedAt && !heldAt) {
+      return PickingSlipStatus.NOT_PRINTED;
+    } else if (!!printedAt && !inspectedAt && !shippedAt && !heldAt) {
+      return PickingSlipStatus.PRINTED;
+    } else if (!!heldAt) {
+      return PickingSlipStatus.HELD;
+    } else {
+      return PickingSlipStatus.OTHERS;
+    }
+  }
+
+  async hasPreOrderItem(pickingSlipItems: [PickingSlipItem]): Promise<Boolean> {
+    return pickingSlipItems.some((item) => item.isPreOrder === 1);
   }
 }

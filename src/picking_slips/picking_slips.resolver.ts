@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { PickingSlipsService } from './picking_slips.service';
 import { PickingSlip } from './entities/picking_slip.entity';
 import { CreatePickingSlipInput } from './dto/create-picking_slip.input';
@@ -22,8 +30,10 @@ export class PickingSlipsResolver {
     @Args('limit', { type: () => Int, nullable: true }) limit?: number,
     @Args('status', { type: () => PickingSlipStatus, nullable: true })
     status?: PickingSlipStatus,
+    @Args('has_pre_order_item', { type: () => Boolean, nullable: true })
+    has_pre_order_item?: Boolean,
   ) {
-    return this.pickingSlipsService.findAll(limit);
+    return this.pickingSlipsService.findAll(limit, status, has_pre_order_item);
   }
 
   @Query(() => PickingSlip, { name: 'pickingSlip' })
@@ -45,5 +55,19 @@ export class PickingSlipsResolver {
   @Mutation(() => PickingSlip)
   removePickingSlip(@Args('id', { type: () => Int }) id: number) {
     return this.pickingSlipsService.remove(id);
+  }
+
+  @ResolveField(() => PickingSlip)
+  async status(@Parent() pickingSlip: PickingSlip): Promise<string> {
+    return this.pickingSlipsService.calculateStatus(
+      pickingSlip.pickingSlipDate,
+    );
+  }
+
+  @ResolveField(() => PickingSlip)
+  async hasPreOrderItem(@Parent() pickingSlip: PickingSlip): Promise<Boolean> {
+    return this.pickingSlipsService.hasPreOrderItem(
+      pickingSlip.pickingSlipItems,
+    );
   }
 }

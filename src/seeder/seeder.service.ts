@@ -11,13 +11,7 @@ import * as csv from 'csv-parser';
 
 @Injectable()
 export class PickingSlipSeederService {
-  constructor(
-    @InjectDataSource() private readonly dataSource: DataSource,
-    // @InjectRepository(PickingSlip)
-    // private readonly pickingSlipsRepository: Repository<PickingSlip>,
-    // @InjectEntityManager()
-    // private readonly entityManager: EntityManager,
-  ) {}
+  constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
 
   async seedFromCSV(csvFilePath: string): Promise<void> {
     const pickingSlips: PickingSlip[] = [];

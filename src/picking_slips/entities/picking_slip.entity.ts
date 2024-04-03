@@ -3,13 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryColumn,
-  VirtualColumn,
 } from 'typeorm';
 import { PickingSlipStatus } from 'src/enums/picking_slip_status.enum';
 import { PickingSlipDate } from 'src/picking_slip_dates/entities/picking_slip_date.entity';
+import { PickingSlipItem } from 'src/picking_slip_items/entities/picking_slip_item.entity';
 
 @Entity('picking_slips')
 @ObjectType('PickingSlip')
@@ -41,6 +41,17 @@ export class PickingSlip {
   @Field(() => PickingSlipDate, { nullable: true })
   pickingSlipDate: PickingSlipDate;
 
+  @OneToMany(
+    () => PickingSlipItem,
+    (pickingSlipItem) => pickingSlipItem.pickingSlip,
+    { nullable: true },
+  )
+  @Field(() => [PickingSlipItem], { nullable: true })
+  pickingSlipItems: [PickingSlipItem];
+
   @Field((type) => PickingSlipStatus, { nullable: true })
   status: PickingSlipStatus;
+
+  @Field((type) => Boolean, { nullable: true })
+  hasPreOrderItem: Boolean;
 }
